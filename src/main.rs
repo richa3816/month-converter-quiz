@@ -115,7 +115,13 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                 Mode::Normal => match key.code {
                     KeyCode::Char('q') => { return Ok(()); }
                     KeyCode::Char('i') => { app.mode = Mode::Input; }
-                    KeyCode::Char('p') => { app.pride_mode ^= true; }
+                    KeyCode::Char('p') => {
+                        app.pride_mode ^= true;
+                        match app.pride_mode {
+                            true => app.months[5] = String::from("Pride"),
+                            false => app.months[5] = String::from("June"),
+                        }
+                    }
                     // Make this highlight/flash the mode signifier
                     _ => {}
                 },
