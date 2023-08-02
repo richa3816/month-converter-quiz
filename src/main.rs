@@ -1,5 +1,5 @@
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
+    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, ModifierKeyCode, KeyModifiers},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -63,7 +63,7 @@ struct App {
 impl Default for App {
     fn default() -> App {
         App {
-            pride_mode: true,
+            pride_mode: false,
             mode: Mode::Normal,
             input_box: String::new(),
             submission: String::new(),
@@ -78,7 +78,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Setup Terminal
     enable_raw_mode()?;
     let mut stdout = io::stdout();
-    execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
+    execute!(
+        stdout,
+        EnterAlternateScreen,
+        EnableMouseCapture,
+    )?;
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
 
@@ -87,14 +91,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let res = run_app(&mut terminal, app);
 
     // Restore terminal
-    // This is used if the app stops without the shortcut being
-    //  pressed for some reason. Allowing the default flow to
-    //  handle the restoration of the terminal.
     disable_raw_mode()?;
     execute!(
         terminal.backend_mut(),
         LeaveAlternateScreen,
-        DisableMouseCapture
+        DisableMouseCapture,
     )?;
     terminal.show_cursor()?;
 
@@ -125,9 +126,9 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     // Make this highlight/flash the mode signifier
                     _ => {}
                 },
-               Mode::Input => match key.code {
-                    KeyCode::Esc => { app.mode = Mode::Normal; }
-                    KeyCode::Enter => {
+               Mode::Input => match (key.modifiers, key.code) {
+                    (_, KeyCode::Esc) => { app.mode = Mode::Normal; }
+                    (_, KeyCode::Enter) => {
                         app.submission = String::from(&app.input_box);
                         app.answer = String::from(&app.months[month]);
                         if app.submission.to_uppercase() == app.answer.to_uppercase() {
@@ -138,9 +139,12 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                         app.input_box.clear();
                         month = rng.gen_range(0, 12);
                     }
-                    KeyCode::Char(c) => { app.input_box.push(c); }
-                    KeyCode::Backspace => { app.input_box.pop(); }
-                    _ => {}
+                    (_, KeyCode::Char(c)) => { app.input_box.push(c); }
+                    (_, KeyCode::Backspace) => { app.input_box.pop(); }
+                    (KeyModifiers::CONTROL, KeyCode::Backspace) => {
+                        while app.input_box.pop().unwrap() != ' ' {}
+                    }
+                    (_, _) => {}
                 }
             }
         }
