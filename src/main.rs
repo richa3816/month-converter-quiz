@@ -25,7 +25,7 @@ fn color_palette(color: &str) -> tui::style::Color {
         "fg" => Color::White,
         "barbg" => Color::Blue,
         "red" => Color::Red,
-        _ => Color::Cyan,
+        _ => Color::LightRed,
     }
 }
 
