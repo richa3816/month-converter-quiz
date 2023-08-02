@@ -24,6 +24,7 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 
 **In insert mode**
 
-| Key   | Action          |
-| ----- | --------------- |
-| `Esc` | Exit insert mode|
+| Key    | Action          |
+| ------ | --------------- |
+| `Esc`  | Exit insert mode|
+| `<CR>` | Submit answer   |
