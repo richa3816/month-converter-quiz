@@ -21,10 +21,11 @@ use unicode_width::UnicodeWidthStr;
 // Stores and fetches colors for the entire program
 fn color_palette(color: &str) -> tui::style::Color {
     match color {
-        "bg" => Color::Rgb(18, 14, 15),
-        "fg" => Color::Rgb(243, 210, 77),
-        "barbg" => Color::Rgb(10, 15, 18),
-        _ => Color::Rgb(255, 0, 0),
+        "bg" => Color::Black,
+        "fg" => Color::White,
+        "barbg" => Color::Blue,
+        "red" => Color::Red,
+        _ => Color::Cyan,
     }
 }
 
@@ -106,8 +107,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<()> {
     let mut rng = rand::thread_rng();
-    let month = rng.gen_range(0, 12);
-    app.answer = String::from(&app.months[month]);
+    let mut month = rng.gen_range(0, 12);
     loop {
         terminal.draw(|f| ui(f, &app, &month))?;
         if let Event::Key(key) = event::read()? {
@@ -119,18 +119,18 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     // Make this highlight/flash the mode signifier
                     _ => {}
                 },
-                Mode::Input => match key.code {
+               Mode::Input => match key.code {
                     KeyCode::Esc => { app.mode = Mode::Normal; }
                     KeyCode::Enter => {
                         app.submission = String::from(&app.input_box);
+                        app.answer = String::from(&app.months[month]);
                         if app.submission.to_uppercase() == app.answer.to_uppercase() {
                             app.correct = true;
                         } else {
                             app.correct = false;
                         }
                         app.input_box.clear();
-                        let mut rng = rand::thread_rng();
-                        let month = rng.gen_range(0, 12);
+                        month = rng.gen_range(0, 12);
                     }
                     KeyCode::Char(c) => { app.input_box.push(c); }
                     KeyCode::Backspace => { app.input_box.pop(); }
@@ -158,7 +158,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App, month: &usize) {
             "{if_correct}\nWhat is the month: {question}"
             // If app.correct is true then no message needs to be displayed
             // Consider changing this to a bright green "Correct"
-            , if_correct = if app.correct { "" } else { "WRONG!" }
+            , if_correct = if app.correct { String::new() } else { format!("WRONG! The answer is: {answer}", answer=app.answer) }
             // +1 to offset array index
             , question=month + 1
             )
