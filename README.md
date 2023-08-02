@@ -8,36 +8,35 @@ I made this to practice reading months as numbers and knowing which month it cor
 
 ## Installation
 
-It is a requirement to have Cargo to build and run this project.
+### Dependencies
+
+#### Git
+
+Git is required to clone the repository if you do not wish to download it as a `.zip`.
 
 **Archlinux**
-```
-$ doas pacman -S rustup
-$ rustup default stable
-$ git clone git@github.com:richa3816/month-converter-quiz
-$ cd month-converter-quiz
-$ cargo run
-```
+Install git `doas pacman -S git`.
+
+#### Cargo
+
+Cargo is required to build the project and it's dependencies, producing an executable that you can run.
+
+**Archlinux**
+Install rustup, the recommended Rust toolchain manager `doas pacman -S rustup`.
+Install the default, stable toolchain (includes Cargo) `rustup default stable`.
 
 **WSL**
-```
-$ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-$ rustup default stable
-$ git clone git@github.com:richa3816/month-converter-quiz
-$ cd month-converter-quiz
-$ cargo run
-```
+Install rustup, the recommended Rust toolchain manager `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`.
 
 **Windows**
+Download `rustup-init.exe` from https://rustup.rs and install rustup. Once rustup is installed open PowerShell as an administrator and type `rustup default stable` to install the latest, stable Rust toolchain, then close PowerShell.
 
-Download `rustup-init.exe` from https://rustup.rs and install rustup.
-Open PowerShell as administrator and type `rustup default stable`.
-Open PowerShell as a regular user:
-```
-> git clone git@github.com:richa3816/month-converter-quiz
-> cd month-converter-quiz
-> cargo run
-```
+### Build instructions
+
+Get the files locally through https `git clone https://github.com/richa3816/month-converter-quiz.git`.
+Go into this directory `cd month-converter-quiz`.
+Build the executable from the source code `cargo build`.
+Run the executable automatically `cargo run -q` (the `-q` part is optional, but just makes it look a bit nicer).
 
 ## How to use
 
@@ -64,13 +63,14 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 
 # Known issues (I'm using this as a TODO list basically, don't mind this)
 
-- The UI file is potentially too bulky so may need to be organised into more files
-- Add more modes beyond pride mode
-- Adding `<C-BS>` and `<C-w>` for word-deletion Functionality
-- Testing with better colors and layouts
-- Adding a red background to "WRONG!" text
-- Adding unit tests and instructions for testing
-- Adding git as a listed dependency
-- Compartmentalise the installation instructions per step rather than per OS
-- Add a TOC to the README.md
-- Add image tutorials after changing the statusbar
+[ ] The randomisation seems skewed, repeated numbers are surprisingly common and June is a rarely chosen month
+[ ] The UI file is potentially too bulky so may need to be organised into more files
+[ ] Add more modes beyond pride mode
+[ ] Adding `<C-BS>` and `<C-w>` for word-deletion Functionality
+[ ] Testing with better colors and layouts
+[ ] Adding a red background to "WRONG!" text
+[ ] Adding unit tests and instructions for testing
+[ ] Adding git as a listed dependency
+[o] Compartmentalise the installation instructions per step rather than per OS
+[ ] Add a TOC to the README.md
+[ ] Add image tutorials after changing the statusbar
