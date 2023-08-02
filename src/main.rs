@@ -67,7 +67,7 @@ impl Default for App {
             mode: Mode::Normal,
             input_box: String::new(),
             submission: String::new(),
-            months: [String::from("January"), String::from("February"), String::from("March"), String::from("April"), String::from("May"), String::from("Pride"), String::from("July"), String::from("August"), String::from("September"), String::from("October"), String::from("November"), String::from("December")],
+            months: [String::from("January"), String::from("February"), String::from("March"), String::from("April"), String::from("May"), String::from("June"), String::from("July"), String::from("August"), String::from("September"), String::from("October"), String::from("November"), String::from("December")],
             answer: String::new(),
             correct: true,
         }
