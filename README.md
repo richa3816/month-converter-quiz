@@ -79,15 +79,9 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 
 [ ] Add more modes beyond pride mode
 
-[ ] Adding `<C-BS>` and `<C-w>` for word-deletion Functionality
-
 [ ] Testing with better colors and layouts
 
-[ ] Adding a red background to "WRONG!" text
-
 [ ] Adding unit tests and instructions for testing
-
-[ ] Adding git as a listed dependency
 
 [ ] Add a TOC to the README.md
 
