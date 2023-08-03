@@ -64,12 +64,12 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 
 **In insert mode**
 
-| Key    | Action          |
-| ------ | --------------- |
-| `Esc`  | Exit insert mode|
-| `<CR>` | Submit answer   |
+| Key      | Action            |
+| -------- | ----------------- |
+| `Esc`    | Exit insert mode  |
+| `<CR>`   | Submit answer     |
 | `<C-BS>` | Deletes last word |
-| `<C-w>` | Deletes last word |
+| `<C-w>`  | Deletes last word |
 
 # Known issues (I'm using this as a TODO list basically, don't mind this)
 
