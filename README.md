@@ -86,3 +86,5 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 [ ] Add a TOC to the README.md
 
 [ ] Add image tutorials after changing the statusbar
+
+[ ] Add option for empty answer protection
