@@ -61,16 +61,14 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 | ------ | --------------- |
 | `Esc`  | Exit insert mode|
 | `<CR>` | Submit answer   |
+| `<C-BS>` | Deletes last word |
+| `<C-w>` | Deletes last word |
 
 # Known issues (I'm using this as a TODO list basically, don't mind this)
 
-- The UI file is potentially too bulky so may need to be organised into more files
 - Add more modes beyond pride mode
-- Adding `<C-BS>` and `<C-w>` for word-deletion Functionality
+- The UI file is potentially too bulky so may need to be organised into more files
 - Testing with better colors and layouts
-- Adding a red background to "WRONG!" text
 - Adding unit tests and instructions for testing
-- Adding git as a listed dependency
-- Compartmentalise the installation instructions per step rather than per OS
 - Add a TOC to the README.md
 - Add image tutorials after changing the statusbar

@@ -1,5 +1,12 @@
 use crossterm::{
-    event::{self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, ModifierKeyCode, KeyModifiers},
+    event::{
+        self,
+        DisableMouseCapture,
+        EnableMouseCapture,
+        Event,
+        KeyCode,
+        KeyModifiers
+    },
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -74,6 +81,12 @@ impl Default for App {
     }
 }
 
+fn delete_word(s: &mut String) -> String {
+    let new_len = s.len() - s.split(' ').last().unwrap().len();
+    s.truncate(new_len);
+    String::from(s.trim())
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
     // Setup Terminal
     enable_raw_mode()?;
@@ -111,6 +124,7 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
     let mut month = rng.gen_range(0, 12);
     loop {
         terminal.draw(|f| ui(f, &app, &month))?;
+        // Key bindings
         if let Event::Key(key) = event::read()? {
             match app.mode {
                 Mode::Normal => match key.code {
@@ -126,9 +140,9 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     // Make this highlight/flash the mode signifier
                     _ => {}
                 },
-               Mode::Input => match (key.modifiers, key.code) {
-                    (_, KeyCode::Esc) => { app.mode = Mode::Normal; }
-                    (_, KeyCode::Enter) => {
+               Mode::Input => match key.code {
+                    KeyCode::Esc => { app.mode = Mode::Normal; }
+                    KeyCode::Enter => {
                         app.submission = String::from(&app.input_box);
                         app.answer = String::from(&app.months[month]);
                         if app.submission.to_uppercase() == app.answer.to_uppercase() {
@@ -139,12 +153,27 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                         app.input_box.clear();
                         month = rng.gen_range(0, 12);
                     }
-                    (_, KeyCode::Char(c)) => { app.input_box.push(c); }
-                    (_, KeyCode::Backspace) => { app.input_box.pop(); }
-                    (KeyModifiers::CONTROL, KeyCode::Backspace) => {
-                        while app.input_box.pop().unwrap() != ' ' {}
+                    // Linux terminal detects Ctrl+Backspace as Ctrl+h
+                    KeyCode::Char('h') => {
+                        if key.modifiers == KeyModifiers::CONTROL {
+                            //while app.input_box.pop() != Some(' ') {}
+                            //delete_word(&mut app);
+                            app.input_box = delete_word(&mut app.input_box);
+                        } else {
+                            app.input_box.push('h');
+                        }
                     }
-                    (_, _) => {}
+                    KeyCode::Char('w') => {
+                        if key.modifiers == KeyModifiers::CONTROL {
+                            //delete_word(&mut app);
+                            app.input_box = delete_word(&mut app.input_box);
+                        } else {
+                            app.input_box.push('w');
+                        }
+                    }
+                    KeyCode::Char(c) => { app.input_box.push(c); }
+                    KeyCode::Backspace => { app.input_box.pop(); }
+                    _ => {}
                 }
             }
         }
