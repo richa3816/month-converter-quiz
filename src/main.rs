@@ -38,13 +38,13 @@ fn color_palette(color: &str) -> tui::style::Color {
 
 enum Mode {
     Normal,
-    Input,
+    Insert,
 }
 impl fmt::Display for Mode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Mode::Normal => write!(f, "normal"),
-            Mode::Input => write!(f, "input"),
+            Mode::Insert => write!(f, "insert"),
         }
     }
 }
@@ -129,7 +129,7 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
             match app.mode {
                 Mode::Normal => match key.code {
                     KeyCode::Char('q') => { return Ok(()); }
-                    KeyCode::Char('i') => { app.mode = Mode::Input; }
+                    KeyCode::Char('i') => { app.mode = Mode::Insert; }
                     KeyCode::Char('p') => {
                         app.pride_mode ^= true;
                         match app.pride_mode {
@@ -140,7 +140,7 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     // Make this highlight/flash the mode signifier
                     _ => {}
                 },
-               Mode::Input => match key.code {
+               Mode::Insert => match key.code {
                     KeyCode::Esc => { app.mode = Mode::Normal; }
                     KeyCode::Enter => {
                         if !app.input_box.trim().is_empty() {
@@ -158,8 +158,6 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     // Linux terminal detects Ctrl+Backspace as Ctrl+h
                     KeyCode::Char('h') => {
                         if key.modifiers == KeyModifiers::CONTROL {
-                            //while app.input_box.pop() != Some(' ') {}
-                            //delete_word(&mut app);
                             app.input_box = delete_word(&mut app.input_box);
                         } else {
                             app.input_box.push('h');
@@ -224,7 +222,7 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App, month: &usize) {
 
     match app.mode {
         Mode::Normal => {}
-        Mode::Input => {
+        Mode::Insert => {
             f.set_cursor(
                 // Put cursor past the end of the input text
                 chunks[2].x + app.input_box.width() as u16,
@@ -235,6 +233,5 @@ fn ui<B: Backend>(f: &mut Frame<B>, app: &App, month: &usize) {
 
     let input_box = Paragraph::new(app.input_box.as_ref())
         .style(Style::default().bg(color_palette("bg")).fg(color_palette("fg")));
-        //.block(Block::default().borders(Borders::ALL).title("Input"));
     f.render_widget(input_box, chunks[2]);
 }
