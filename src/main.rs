@@ -145,7 +145,7 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     KeyCode::Enter => {
                         app.submission = String::from(&app.input_box);
                         app.answer = String::from(&app.months[month]);
-                        if app.submission.to_uppercase() == app.answer.to_uppercase() {
+                        if app.submission.trim().to_uppercase() == app.answer.trim().to_uppercase() {
                             app.correct = true;
                         } else {
                             app.correct = false;
