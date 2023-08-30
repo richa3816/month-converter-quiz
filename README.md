@@ -73,18 +73,18 @@ Reading the status bar is easy too as it's all in plain text displaying the mode
 
 # Known issues (I'm using this as a TODO list basically, don't mind this)
 
-[ ] The randomisation seems skewed, repeated numbers are surprisingly common and June is a rarely chosen month
+- The randomisation seems skewed, repeated numbers are surprisingly common and June is a rarely chosen month
 
-[ ] The UI file is potentially too bulky so may need to be organised into more files
+- The UI file is potentially too bulky so may need to be organised into more files
 
-[ ] Add more modes beyond pride mode
+- Add more modes beyond pride mode
 
-[ ] Testing with better colors and layouts
+- Testing with better colors and layouts
 
-[ ] Adding unit tests and instructions for testing
+- Adding unit tests and instructions for testing
 
-[ ] Add a TOC to the README.md
+- Add a TOC to the README.md
 
-[ ] Add image tutorials after changing the statusbar
+- Add image tutorials after changing the statusbar
 
-[ ] Add option for empty answer protection
+- Add option for empty answer protection
