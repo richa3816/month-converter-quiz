@@ -143,15 +143,17 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                Mode::Input => match key.code {
                     KeyCode::Esc => { app.mode = Mode::Normal; }
                     KeyCode::Enter => {
-                        app.submission = String::from(&app.input_box);
-                        app.answer = String::from(&app.months[month]);
-                        if app.submission.trim().to_uppercase() == app.answer.trim().to_uppercase() {
-                            app.correct = true;
-                        } else {
-                            app.correct = false;
+                        if !app.input_box.trim().is_empty() {
+                            app.submission = String::from(&app.input_box);
+                            app.answer = String::from(&app.months[month]);
+                            if app.submission.trim().to_uppercase() == app.answer.trim().to_uppercase() {
+                                app.correct = true;
+                            } else {
+                                app.correct = false;
+                            }
+                            app.input_box.clear();
+                            month = rng.gen_range(0, 12);
                         }
-                        app.input_box.clear();
-                        month = rng.gen_range(0, 12);
                     }
                     // Linux terminal detects Ctrl+Backspace as Ctrl+h
                     KeyCode::Char('h') => {
@@ -165,7 +167,6 @@ fn run_app<B: Backend>(terminal: &mut Terminal<B>, mut app: App) -> io::Result<(
                     }
                     KeyCode::Char('w') => {
                         if key.modifiers == KeyModifiers::CONTROL {
-                            //delete_word(&mut app);
                             app.input_box = delete_word(&mut app.input_box);
                         } else {
                             app.input_box.push('w');
